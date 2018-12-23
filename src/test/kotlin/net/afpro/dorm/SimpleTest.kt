@@ -24,7 +24,8 @@ class SimpleTest {
             inst.ints)
     }
 
-    class Content : DormTarget {
+    @DormTarget
+    class Content {
         @Dorm("./root/@name")
         var name: String = ""
 
@@ -38,7 +39,8 @@ class SimpleTest {
         var ints: IntArray = intArrayOf()
     }
 
-    class Sub : DormTarget {
+    @DormTarget
+    class Sub {
         @Dorm("./@name")
         var name: String = ""
 

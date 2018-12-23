@@ -56,7 +56,7 @@ public class TypeUtils {
         }
 
         final int classCheckResult =
-                (DormTarget.class.isAssignableFrom(type) ? TYPE_DORM_TARGET : 0)
+                (type.getAnnotation(DormTarget.class) != null ? TYPE_DORM_TARGET : 0)
                         | (type.isInterface() ? TYPE_INTERFACE : 0)
                         | (Modifier.isAbstract(type.getModifiers()) ? TYPE_ABSTRACT_CLASS : 0);
         if (classCheckResult != 0) {
