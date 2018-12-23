@@ -140,13 +140,7 @@ object DormSink {
                 if (dorm.append) {
                     throw DormParseException("can't append to string")
                 }
-                return xpath.evaluate(dorm.value, node).let {
-                    if (dorm.trim) {
-                        it.trim()
-                    } else {
-                        it
-                    }
-                }
+                return xpath.evaluate(dorm.value, node).let { dorm.processText(it) }
             }
             checkResult == TypeUtils.TYPE_ARRAY -> {
                 (xpath.evaluate(dorm.value, node, XPathConstants.NODESET) as? NodeList)
@@ -195,13 +189,7 @@ object DormSink {
                     { TypeUtils.parse(desiredType, text) })
             }
             checkResult == TypeUtils.TYPE_STRING -> {
-                return xpath.evaluate("./text()", node).let {
-                    if (dorm.trim) {
-                        it.trim()
-                    } else {
-                        it
-                    }
-                }
+                return xpath.evaluate("./text()", node).let { dorm.processText(it) }
             }
             checkResult == TypeUtils.TYPE_ARRAY -> {
                 throw DormParseException("array of array unsupported")
@@ -225,6 +213,14 @@ object DormSink {
             return f()
         } catch (e: Throwable) {
             throw DormParseException(msg(), e)
+        }
+    }
+
+    private fun Dorm.processText(text: String): String {
+        return if (trim) {
+            text.trim()
+        } else {
+            text
         }
     }
 }
